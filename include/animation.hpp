@@ -2,14 +2,17 @@
 
 #include <vector>
 
-struct Particle {
+struct RGBColor {
+    int red;
+    int green;
+    int blue;
+};
+
+struct AnimationObject {
     float x, y;
-    float vx, vy;
-
-    float lifetime;
-
-    int color;
-    char glyph;
+    int width, height;
+    RGBColor color;
+    float brightness;
 };
 
 class Animation {
@@ -18,12 +21,34 @@ public:
 
     void update(float deltaTime, int width, int height);
 
-    const std::vector<Particle>& getParticles() const;
+    std::vector<AnimationObject> getObjects() const;
 
 private:
+    struct Particle {
+        enum class Type {
+            Rocket,
+            Spark
+        };
+
+        float x, y;
+        float vx, vy;
+
+        int width, height;
+        float lifetime, maxLifetime;
+
+        RGBColor color;
+        Type type;
+    };
+
     std::vector<Particle> particles;
 
     float spawnTimer = 0.0f;
 
-    void spawnBurst(float x, float y);
+    void spawnRocket(int width, int height);
+    void spawnExplosion(
+        std::vector<Particle>& spawned,
+        float x,
+        float y,
+        RGBColor color
+    );
 };

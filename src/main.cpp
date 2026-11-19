@@ -22,7 +22,7 @@ int main() {
         auto [width, height] = terminal.getSize();
 
         animation.update(deltaTime, width, height);
-        renderer.draw(animation, width, height);
+        renderer.draw(animation.getObjects(), width, height);
 
         std::this_thread::sleep_for(
             std::chrono::milliseconds(33)
